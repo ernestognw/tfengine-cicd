@@ -81,7 +81,7 @@ template "cicd" {
     project_id = "cicd-project-test"
     github = {
       owner = "ernestognw"
-      name  = "cicd-project-test"
+      name  = "tfengine-cicd"
     }
 
     # Required for scheduler.

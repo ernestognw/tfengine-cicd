@@ -26,7 +26,7 @@ resource "google_cloudbuild_trigger" "validate_prod" {
 
   github {
     owner = "ernestognw"
-    name  = "cicd-project-test"
+    name  = "tfengine-cicd"
     pull_request {
       branch = "^main$"
     }
@@ -56,7 +56,7 @@ resource "google_cloudbuild_trigger" "plan_prod" {
 
   github {
     owner = "ernestognw"
-    name  = "cicd-project-test"
+    name  = "tfengine-cicd"
     pull_request {
       branch = "^main$"
     }
@@ -89,7 +89,7 @@ resource "google_cloudbuild_trigger" "plan_scheduled_prod" {
 
   github {
     owner = "ernestognw"
-    name  = "cicd-project-test"
+    name  = "tfengine-cicd"
     push {
       branch = "^main$"
     }
@@ -142,7 +142,7 @@ resource "google_cloudbuild_trigger" "apply_prod" {
 
   github {
     owner = "ernestognw"
-    name  = "cicd-project-test"
+    name  = "tfengine-cicd"
     push {
       branch = "^main$"
     }
