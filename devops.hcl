@@ -28,7 +28,7 @@ template "devops" {
   data = {
     # TODO(user): Uncomment and re-run the engine after generated devops module has been deployed.
     # Run `terraform init` in the devops module to backup its state to GCS.
-    # enable_gcs_backend = true
+    enable_gcs_backend = true
 
     admins_group = {
       id     = "cicd-test-org-admins@qrispier.com"
