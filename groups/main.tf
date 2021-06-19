@@ -25,27 +25,13 @@ terraform {
   }
 }
 
-# Create the project and optionally enable APIs, create the deletion lien and add to shared VPC.
-# Deletion lien: https://cloud.google.com/resource-manager/docs/project-liens
-# Shared VPC: https://cloud.google.com/docs/enterprise/best-practices-for-enterprise-organizations#centralize_network_control
+
 module "project" {
-  source  = "terraform-google-modules/project-factory/google"
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
   version = "~> 10.2.2"
 
-  name            = "cicd-test"
-  org_id          = ""
-  folder_id       = "526868020083"
-  billing_account = "01C1BA-DBC5AE-2AF7A4"
-  lien            = true
-  # Create and keep default service accounts when certain APIs are enabled.
-  default_service_account = "keep"
-  # Do not create an additional project service account to be used for Compute Engine.
-  create_project_sa = false
-  # When Kubernetes Engine API is enabled, grant Kubernetes Engine Service Agent the
-  # Compute Security Admin role on the VPC host project so it can manage firewall rules.
-  # It is a no-op when Kubernetes Engine API is not enabled in the project.
-  grant_services_security_admin_role = true
-  activate_apis                      = []
+  project_id    = "cicd-test"
+  activate_apis = []
 }
 # Required when using end-user ADCs (Application Default Credentials) to manage Cloud Identity groups and memberships.
 provider "google-beta" {
@@ -61,6 +47,7 @@ module "cicd_test_cicd_viewers_qrispier_com" {
   id           = "cicd-test-cicd-viewers@qrispier.com"
   customer_id  = "C03yezfd5"
   display_name = "cicd-test-cicd-viewers"
+  owners       = ["ernestognw@qrispier.com"]
 }
 
 module "cicd_test_cicd_editors_qrispier_com" {
@@ -70,4 +57,5 @@ module "cicd_test_cicd_editors_qrispier_com" {
   id           = "cicd-test-cicd-editors@qrispier.com"
   customer_id  = "C03yezfd5"
   display_name = "cicd-test-cicd-editors"
+  owners       = ["ernestognw@qrispier.com"]
 }

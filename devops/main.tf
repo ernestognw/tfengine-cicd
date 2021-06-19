@@ -78,6 +78,7 @@ module "owners_group" {
   id           = "cicd-test-devops-owners@qrispier.com"
   customer_id  = "C03yezfd5"
   display_name = "cicd-test-devops-owners"
+  owners       = ["ernestognw@qrispier.com"]
   depends_on = [
     module.project
   ]
@@ -108,6 +109,7 @@ module "admins_group" {
   id           = "cicd-test-org-admins@qrispier.com"
   customer_id  = "C03yezfd5"
   display_name = "cicd-test-org-admins"
+  owners       = ["ernestognw@qrispier.com"]
   depends_on = [
     module.project
   ]
