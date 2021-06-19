@@ -33,6 +33,7 @@ template "devops" {
     admins_group = {
       id     = "cicd-test-org-admins@qrispier.com"
       customer_id = "C03yezfd5"
+      owners = ["ernestognw@qrispier.com"]
     }
 
     project = {
@@ -40,6 +41,7 @@ template "devops" {
       owners_group = {
         id     = "cicd-test-devops-owners@qrispier.com"
         customer_id = "C03yezfd5"
+        owners = ["ernestognw@qrispier.com"]
       }
     }
   }
@@ -53,16 +55,19 @@ template "groups" {
   data = {
     project = {
       project_id = "cicd-test"
+      exists     = true
     }
     resources = {
       groups = [
         {
           id          = "cicd-test-cicd-viewers@qrispier.com"
           customer_id = "C03yezfd5"
+          owners = ["ernestognw@qrispier.com"]
         },
         {
           id          = "cicd-test-cicd-editors@qrispier.com"
           customer_id = "C03yezfd5"
+          owners = ["ernestognw@qrispier.com"]
         },
       ]
     }
