@@ -28,6 +28,10 @@ terraform {
     google      = "~> 3.0"
     google-beta = "~> 3.0"
   }
+  backend "gcs" {
+    bucket = "cicd-test-state"
+    prefix = "devops"
+  }
 }
 
 # Required when using end-user ADCs (Application Default Credentials) to manage Cloud Identity groups and memberships.
