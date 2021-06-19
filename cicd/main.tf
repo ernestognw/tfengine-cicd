@@ -30,7 +30,7 @@ terraform {
     google-beta = "~> 3.0"
   }
   backend "gcs" {
-    bucket = "cicd-test-state"
+    bucket = "cicd-project-test-state"
     prefix = "cicd"
   }
 }
@@ -88,7 +88,7 @@ resource "google_project_service" "services" {
 # IAM permissions to allow contributors to view the cloud build jobs.
 resource "google_project_iam_member" "cloudbuild_builds_viewers" {
   for_each = toset([
-    "group:cicd-test-cicd-viewers@qrispier.com",
+    "group:cicd-project-test-cicd-viewers@qrispier.com",
   ])
   project = var.project_id
   role    = "roles/cloudbuild.builds.viewer"
@@ -101,7 +101,7 @@ resource "google_project_iam_member" "cloudbuild_builds_viewers" {
 # IAM permissions to allow approvers to edit/create the cloud build jobs.
 resource "google_project_iam_member" "cloudbuild_builds_editors" {
   for_each = toset([
-    "group:cicd-test-cicd-editors@qrispier.com",
+    "group:cicd-project-test-cicd-editors@qrispier.com",
   ])
   project = var.project_id
   role    = "roles/cloudbuild.builds.editor"
@@ -115,8 +115,8 @@ resource "google_project_iam_member" "cloudbuild_builds_editors" {
 # https://cloud.google.com/cloud-build/docs/securing-builds/store-view-build-logs
 resource "google_project_iam_member" "cloudbuild_logs_viewers" {
   for_each = toset([
-    "group:cicd-test-cicd-viewers@qrispier.com",
-    "group:cicd-test-cicd-editors@qrispier.com",
+    "group:cicd-project-test-cicd-viewers@qrispier.com",
+    "group:cicd-project-test-cicd-editors@qrispier.com",
   ])
   project = var.project_id
   role    = "roles/viewer"

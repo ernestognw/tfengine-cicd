@@ -18,7 +18,7 @@ data = {
   parent_type      = "folder" # One of `organization` or `folder`.
   parent_id        = "526868020083"
   billing_account  = "01C1BA-DBC5AE-2AF7A4"
-  state_bucket     = "cicd-test-state"
+  state_bucket     = "cicd-project-test-state"
   storage_location = "us-central1"
 }
 
@@ -31,15 +31,15 @@ template "devops" {
     enable_gcs_backend = true
 
     admins_group = {
-      id     = "cicd-test-org-admins@qrispier.com"
+      id     = "cicd-project-test-org-admins@qrispier.com"
       customer_id = "C03yezfd5"
       owners = ["ernestognw@qrispier.com"]
     }
 
     project = {
-      project_id = "cicd-test-devops"
+      project_id = "cicd-project-test"
       owners_group = {
-        id     = "cicd-test-devops-owners@qrispier.com"
+        id     = "cicd-project-test-devops-owners@qrispier.com"
         customer_id = "C03yezfd5"
         owners = ["ernestognw@qrispier.com"]
       }
@@ -54,18 +54,18 @@ template "groups" {
   output_path = "./groups"
   data = {
     project = {
-      project_id = "cicd-test"
+      project_id = "cicd-project-test"
       exists     = true
     }
     resources = {
       groups = [
         {
-          id          = "cicd-test-cicd-viewers@qrispier.com"
+          id          = "cicd-project-test-cicd-viewers@qrispier.com"
           customer_id = "C03yezfd5"
           owners = ["ernestognw@qrispier.com"]
         },
         {
-          id          = "cicd-test-cicd-editors@qrispier.com"
+          id          = "cicd-project-test-cicd-editors@qrispier.com"
           customer_id = "C03yezfd5"
           owners = ["ernestognw@qrispier.com"]
         },
@@ -78,17 +78,17 @@ template "cicd" {
   recipe_path = "{{$recipes}}/cicd.hcl"
   output_path = "./cicd"
   data = {
-    project_id = "cicd-test"
+    project_id = "cicd-project-test"
     github = {
       owner = "ernestognw"
-      name  = "cicd-test"
+      name  = "cicd-project-test"
     }
 
     # Required for scheduler.
     scheduler_region = "us-east1"
 
-    build_viewers = ["group:cicd-test-cicd-viewers@qrispier.com"]
-    build_editors = ["group:cicd-test-cicd-editors@qrispier.com"]
+    build_viewers = ["group:cicd-project-test-cicd-viewers@qrispier.com"]
+    build_editors = ["group:cicd-project-test-cicd-editors@qrispier.com"]
 
     terraform_root = "terraform"
     envs = [

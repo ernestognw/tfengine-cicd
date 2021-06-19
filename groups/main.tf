@@ -20,7 +20,7 @@ terraform {
     kubernetes  = "~> 1.0"
   }
   backend "gcs" {
-    bucket = "cicd-test-state"
+    bucket = "cicd-project-test-state"
     prefix = "groups"
   }
 }
@@ -30,7 +30,7 @@ module "project" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
   version = "~> 10.2.2"
 
-  project_id    = "cicd-test"
+  project_id    = "cicd-project-test"
   activate_apis = []
 }
 # Required when using end-user ADCs (Application Default Credentials) to manage Cloud Identity groups and memberships.
@@ -40,22 +40,22 @@ provider "google-beta" {
 }
 
 
-module "cicd_test_cicd_viewers_qrispier_com" {
+module "cicd_project_test_cicd_viewers_qrispier_com" {
   source  = "terraform-google-modules/group/google"
   version = "~> 0.1"
 
-  id           = "cicd-test-cicd-viewers@qrispier.com"
+  id           = "cicd-project-test-cicd-viewers@qrispier.com"
   customer_id  = "C03yezfd5"
-  display_name = "cicd-test-cicd-viewers"
+  display_name = "cicd-project-test-cicd-viewers"
   owners       = ["ernestognw@qrispier.com"]
 }
 
-module "cicd_test_cicd_editors_qrispier_com" {
+module "cicd_project_test_cicd_editors_qrispier_com" {
   source  = "terraform-google-modules/group/google"
   version = "~> 0.1"
 
-  id           = "cicd-test-cicd-editors@qrispier.com"
+  id           = "cicd-project-test-cicd-editors@qrispier.com"
   customer_id  = "C03yezfd5"
-  display_name = "cicd-test-cicd-editors"
+  display_name = "cicd-project-test-cicd-editors"
   owners       = ["ernestognw@qrispier.com"]
 }
