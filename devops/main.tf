@@ -29,7 +29,7 @@ terraform {
     google-beta = "~> 3.0"
   }
   backend "gcs" {
-    bucket = "cicd-test-state"
+    bucket = "cicd-project-test-state"
     prefix = "devops"
   }
 }
@@ -37,7 +37,7 @@ terraform {
 # Required when using end-user ADCs (Application Default Credentials) to manage Cloud Identity groups and memberships.
 provider "google-beta" {
   user_project_override = true
-  billing_project       = "cicd-test-devops"
+  billing_project       = "cicd-project-test"
 }
 
 # Create the project, enable APIs, and create the deletion lien, if specified.
@@ -45,7 +45,7 @@ module "project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 10.2.2"
 
-  name            = "cicd-test-devops"
+  name            = "cicd-project-test"
   org_id          = ""
   folder_id       = "526868020083"
   billing_account = "01C1BA-DBC5AE-2AF7A4"
@@ -65,7 +65,7 @@ module "state_bucket" {
   source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
   version = "~> 1.4"
 
-  name       = "cicd-test-state"
+  name       = "cicd-project-test-state"
   project_id = module.project.project_id
   location   = "us-central1"
 }
@@ -75,9 +75,9 @@ module "owners_group" {
   source  = "terraform-google-modules/group/google"
   version = "~> 0.1"
 
-  id           = "cicd-test-devops-owners@qrispier.com"
+  id           = "cicd-project-test-devops-owners@qrispier.com"
   customer_id  = "C03yezfd5"
-  display_name = "cicd-test-devops-owners"
+  display_name = "cicd-project-test-devops-owners"
   owners       = ["ernestognw@qrispier.com"]
   depends_on = [
     module.project
@@ -106,9 +106,9 @@ module "admins_group" {
   source  = "terraform-google-modules/group/google"
   version = "~> 0.1"
 
-  id           = "cicd-test-org-admins@qrispier.com"
+  id           = "cicd-project-test-org-admins@qrispier.com"
   customer_id  = "C03yezfd5"
-  display_name = "cicd-test-org-admins"
+  display_name = "cicd-project-test-org-admins"
   owners       = ["ernestognw@qrispier.com"]
   depends_on = [
     module.project

@@ -13,5 +13,5 @@
 # limitations under the License.
 
 billing_account = "01C1BA-DBC5AE-2AF7A4"
-project_id      = "cicd-test"
-state_bucket    = "cicd-test-state"
+project_id      = "cicd-project-test"
+state_bucket    = "cicd-project-test-state"
