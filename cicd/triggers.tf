@@ -21,7 +21,7 @@ resource "google_cloudbuild_trigger" "validate_prod" {
   description = "Terraform validate job triggered on push event."
 
   included_files = [
-    "terraform/**",
+    "**",
   ]
 
   github {
@@ -32,10 +32,10 @@ resource "google_cloudbuild_trigger" "validate_prod" {
     }
   }
 
-  filename = "terraform/cicd/configs/tf-validate.yaml"
+  filename = "cicd/configs/tf-validate.yaml"
 
   substitutions = {
-    _TERRAFORM_ROOT = "terraform"
+    _TERRAFORM_ROOT = "."
     _MANAGED_DIRS   = ""
   }
 
@@ -51,7 +51,7 @@ resource "google_cloudbuild_trigger" "plan_prod" {
   description = "Terraform plan job triggered on push event."
 
   included_files = [
-    "terraform/**",
+    "**",
   ]
 
   github {
@@ -62,10 +62,10 @@ resource "google_cloudbuild_trigger" "plan_prod" {
     }
   }
 
-  filename = "terraform/cicd/configs/tf-plan.yaml"
+  filename = "cicd/configs/tf-plan.yaml"
 
   substitutions = {
-    _TERRAFORM_ROOT = "terraform"
+    _TERRAFORM_ROOT = "."
     _MANAGED_DIRS   = ""
   }
 
@@ -84,7 +84,7 @@ resource "google_cloudbuild_trigger" "plan_scheduled_prod" {
   description = "Terraform plan job triggered on schedule."
 
   included_files = [
-    "terraform/**",
+    "**",
   ]
 
   github {
@@ -95,10 +95,10 @@ resource "google_cloudbuild_trigger" "plan_scheduled_prod" {
     }
   }
 
-  filename = "terraform/cicd/configs/tf-plan.yaml"
+  filename = "cicd/configs/tf-plan.yaml"
 
   substitutions = {
-    _TERRAFORM_ROOT = "terraform"
+    _TERRAFORM_ROOT = "."
     _MANAGED_DIRS   = ""
   }
 
@@ -137,7 +137,7 @@ resource "google_cloudbuild_trigger" "apply_prod" {
   description = "Terraform apply job triggered on push event and/or schedule."
 
   included_files = [
-    "terraform/**",
+    "**",
   ]
 
   github {
@@ -148,10 +148,10 @@ resource "google_cloudbuild_trigger" "apply_prod" {
     }
   }
 
-  filename = "terraform/cicd/configs/tf-apply.yaml"
+  filename = "cicd/configs/tf-apply.yaml"
 
   substitutions = {
-    _TERRAFORM_ROOT = "terraform"
+    _TERRAFORM_ROOT = "."
     _MANAGED_DIRS   = ""
   }
 
