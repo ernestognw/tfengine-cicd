@@ -90,7 +90,7 @@ template "cicd" {
     build_viewers = ["group:cicd-project-test-cicd-viewers@qrispier.com"]
     build_editors = ["group:cicd-project-test-cicd-editors@qrispier.com"]
 
-    terraform_root = "terraform"
+    terraform_root = "."
     envs = [
       {
         name        = "prod"
