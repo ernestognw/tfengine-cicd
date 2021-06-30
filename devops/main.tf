@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ terraform {
     google-beta = "~> 3.0"
   }
   backend "gcs" {
-    bucket = "cicd-project-test-state"
+    bucket = var.state_bucket
     prefix = "devops"
   }
 }
@@ -37,7 +37,7 @@ terraform {
 # Required when using end-user ADCs (Application Default Credentials) to manage Cloud Identity groups and memberships.
 provider "google-beta" {
   user_project_override = true
-  billing_project       = "cicd-project-test"
+  billing_project       = var.project.project_id
 }
 
 # Create the project, enable APIs, and create the deletion lien, if specified.
@@ -45,19 +45,16 @@ module "project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 10.2.2"
 
-  name            = "cicd-project-test"
+  name            = var.project.project_id
   org_id          = ""
-  folder_id       = "526868020083"
-  billing_account = "01C1BA-DBC5AE-2AF7A4"
+  folder_id       = var.parent_id
+  billing_account = var.billing_account
   lien            = true
   # Create and keep default service accounts when certain APIs are enabled.
   default_service_account = "keep"
   # Do not create an additional project service account to be used for Compute Engine.
   create_project_sa = false
-  activate_apis = [
-    "cloudbuild.googleapis.com",
-    "cloudidentity.googleapis.com",
-  ]
+  activate_apis     = var.project.apis
 }
 
 # Terraform state bucket, hosted in the devops project.
@@ -65,9 +62,9 @@ module "state_bucket" {
   source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
   version = "~> 1.4"
 
-  name       = "cicd-project-test-state"
+  name       = var.state_bucket
   project_id = module.project.project_id
-  location   = "us-central1"
+  location   = var.storage_location
 }
 
 # Devops project owners group.
@@ -75,10 +72,10 @@ module "owners_group" {
   source  = "terraform-google-modules/group/google"
   version = "~> 0.1"
 
-  id           = "cicd-project-test-devops-owners@qrispier.com"
-  customer_id  = "C03yezfd5"
-  display_name = "cicd-project-test-devops-owners"
-  owners       = ["ernestognw@qrispier.com"]
+  id           = var.project.owners_group.id
+  customer_id  = var.project.owners_group.customer_id
+  display_name = var.project.owners_group.display_name
+  owners       = var.project.owners_group.owners
   depends_on = [
     module.project
   ]
@@ -106,10 +103,10 @@ module "admins_group" {
   source  = "terraform-google-modules/group/google"
   version = "~> 0.1"
 
-  id           = "cicd-project-test-org-admins@qrispier.com"
-  customer_id  = "C03yezfd5"
-  display_name = "cicd-project-test-org-admins"
-  owners       = ["ernestognw@qrispier.com"]
+  id           = var.admins_group.id
+  customer_id  = var.admins_group.customer_id
+  display_name = var.admins_group.display_name
+  owners       = var.admins_group.owners
   depends_on = [
     module.project
   ]
@@ -126,7 +123,7 @@ resource "time_sleep" "admins_wait" {
 
 # Admin permission at folder level.
 resource "google_folder_iam_member" "admin" {
-  folder     = "folders/526868020083"
+  folder     = "folder/${var.parent_id}"
   role       = "roles/resourcemanager.folderAdmin"
   member     = "group:${module.admins_group.id}"
   depends_on = [time_sleep.admins_wait]
